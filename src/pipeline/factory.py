@@ -3,6 +3,7 @@ from __future__ import annotations
 from src.domain.models import Transaction
 from src.domain.taxonomy import load_taxonomy
 from src.engines.llm import LLMCategorizer
+from src.engines.mcc import MccMapper
 from src.engines.merchant_lookup import MerchantKnowledgeBase
 from src.engines.rules import RuleEngine
 from src.pipeline.categorizer import ExpenseCategorizer
@@ -13,6 +14,7 @@ def build_categorizer(settings: Settings | None = None, use_llm: bool = True) ->
     settings = settings or Settings()
     taxonomy = load_taxonomy()
     merchant_kb = MerchantKnowledgeBase(taxonomy)
+    mcc_mapper = MccMapper(taxonomy)
     rule_engine = RuleEngine(taxonomy)
     llm = LLMCategorizer(
         taxonomy=taxonomy,
@@ -25,6 +27,7 @@ def build_categorizer(settings: Settings | None = None, use_llm: bool = True) ->
     return ExpenseCategorizer(
         taxonomy=taxonomy,
         merchant_kb=merchant_kb,
+        mcc_mapper=mcc_mapper,
         rule_engine=rule_engine,
         llm=llm,
         use_llm=use_llm,

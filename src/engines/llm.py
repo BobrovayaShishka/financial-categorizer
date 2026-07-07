@@ -13,7 +13,11 @@ logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT = (
     "Ты классификатор банковских расходов физлица. "
-    "Ответ — только JSON-массив без markdown."
+    "Ответ — только JSON-массив без markdown. "
+    "Примеры: OOO/Marketing/Cloud/Design Studio → business; "
+    "Online School → education; Fit Club/Gym → health; "
+    "Entertainment Hall → entertainment; Transfer to Card → finance. "
+    "other — только если точно не подходит ни одна категория."
 )
 
 
@@ -49,7 +53,8 @@ class LLMCategorizer:
             lines.append(f"{tx_id}|{safe_desc}")
         lines.append(
             '\nВерни JSON: [{"id":"...","category":"<id>","confidence":0.0-1.0}]'
-            '\nИспользуй category=other только если совсем не подходит.'
+            '\nother — только в крайнем случае. '
+            'OOO/LLC/Agency/Cloud/Studio → business; School → education.'
         )
         return "\n".join(lines)
 

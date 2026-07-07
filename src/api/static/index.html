@@ -60,6 +60,7 @@
     }
     .badge.kb { background: #1e3a5f; color: #93c5fd; }
     .badge.rules { background: #14532d; color: #86efac; }
+    .badge.mcc { background: #4c1d95; color: #c4b5fd; }
     .badge.llm { background: #713f12; color: #fcd34d; }
     .stat-row { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
     .stat-row:last-child { border: none; }
@@ -122,6 +123,7 @@
       <div class="card" style="margin-bottom:1.5rem;">
         <h2>Пайплайн</h2>
         <div class="stat-row"><span>База мерчантов</span><span id="statKb">0</span></div>
+        <div class="stat-row"><span>MCC-коды</span><span id="statMcc">0</span></div>
         <div class="stat-row"><span>Правила</span><span id="statRules">0</span></div>
         <div class="stat-row"><span>LLM</span><span id="statLlm">0</span></div>
       </div>
@@ -143,8 +145,8 @@
   <script>
     const fmt = n => new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(n);
     const sourceBadge = s => {
-      const cls = { merchant_kb: 'kb', rules: 'rules', llm: 'llm' }[s] || '';
-      const labels = { merchant_kb: 'KB', rules: 'Rules', llm: 'LLM', bank: 'Bank', skipped: '—' };
+      const cls = { merchant_kb: 'kb', mcc: 'mcc', rules: 'rules', llm: 'llm' }[s] || '';
+      const labels = { merchant_kb: 'KB', mcc: 'MCC', rules: 'Rules', llm: 'LLM', bank: 'Bank', skipped: '—' };
       return `<span class="badge ${cls}">${labels[s] || s}</span>`;
     };
 
@@ -170,8 +172,9 @@
     }
 
     function renderStats(s) {
-      document.getElementById('statKb').textContent = s.merchant_kb;
-      document.getElementById('statRules').textContent = s.rules;
+      document.getElementById('statKb').textContent = s.merchant_kb ?? 0;
+      document.getElementById('statMcc').textContent = s.mcc ?? 0;
+      document.getElementById('statRules').textContent = s.rules ?? 0;
       document.getElementById('statLlm').textContent = s.llm;
     }
 

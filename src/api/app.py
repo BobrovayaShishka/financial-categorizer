@@ -57,6 +57,7 @@ async def categorize(body: CategorizeRequest) -> JSONResponse:
             "usage": result.usage.model_dump(),
             "stats": {
                 "merchant_kb": result.merchant_kb_matched,
+                "mcc": result.mcc_matched,
                 "rules": result.rules_matched,
                 "llm": result.llm_matched,
                 "skipped": result.skipped,
@@ -84,6 +85,7 @@ async def categorize_upload(
             "usage": result.usage.model_dump(),
             "stats": {
                 "merchant_kb": result.merchant_kb_matched,
+                "mcc": result.mcc_matched,
                 "rules": result.rules_matched,
                 "llm": result.llm_matched,
                 "skipped": result.skipped,

@@ -1,0 +1,101 @@
+# MCC-коды → категория (ISO 18245, типичные для РФ)
+# Используется когда описание неоднозначно, но код есть в выписке
+
+mcc:
+  # Продукты
+  "5411": groceries
+  "5422": groceries
+  "5441": groceries
+  "5451": groceries
+  "5499": groceries
+
+  # Рестораны и кафе
+  "5811": dining
+  "5812": dining
+  "5813": dining
+  "5814": dining
+
+  # Транспорт
+  "4111": transport
+  "4121": transport
+  "4131": transport
+  "4784": transport
+  "5541": transport
+  "5542": transport
+  "7523": transport
+
+  # Подписки и связь
+  "4812": subscriptions
+  "4814": subscriptions
+  "4816": subscriptions
+  "4899": subscriptions
+
+  # Здоровье
+  "5912": health
+  "8011": health
+  "8021": health
+  "8031": health
+  "8041": health
+  "8042": health
+  "8043": health
+  "8049": health
+  "8050": health
+  "8062": health
+  "8071": health
+  "8099": health
+
+  # Покупки
+  "5311": shopping
+  "5331": shopping
+  "5399": shopping
+  "5611": shopping
+  "5621": shopping
+  "5631": shopping
+  "5641": shopping
+  "5651": shopping
+  "5691": shopping
+  "5699": shopping
+  "5732": shopping
+  "5733": shopping
+  "5735": shopping
+  "5941": shopping
+  "5945": shopping
+  "5947": shopping
+  "5977": shopping
+
+  # Развлечения
+  "5816": entertainment
+  "7832": entertainment
+  "7922": entertainment
+  "7929": entertainment
+  "7933": entertainment
+  "7941": entertainment
+  "7991": entertainment
+  "7994": entertainment
+  "7996": entertainment
+  "7999": entertainment
+
+  # Жильё
+  "4900": housing
+  "6513": housing
+
+  # Образование
+  "8211": education
+  "8220": education
+  "8241": education
+  "8244": education
+  "8249": education
+  "8299": education
+
+  # Финансы
+  "6010": finance
+  "6011": finance
+  "6012": finance
+  "6051": finance
+  "6211": finance
+  "6300": finance
+
+  # Бизнес / SaaS / реклама
+  "7311": business
+  "7372": business
+  "7399": business

@@ -4,47 +4,79 @@ categories:
     label: "Продукты и быт"
     keywords:
       - пятёрочка
+      - pyaterochka
       - перекрёсток
+      - perekrestok
       - магнит
+      - magnit
       - лента
+      - lenta
       - ашан
+      - ashan
       - дикси
+      - dixy
       - продукт
       - супермаркет
       - grocery
+      - hypermarket
+      - vkusvill
+      - вкусвill
+      - metro cc
+      - selgros
 
   dining:
     label: "Рестораны и кафе"
     keywords:
       - ресторан
+      - restoran
       - кафе
+      - cafe
       - coffee
       - starbucks
       - додо
+      - dodo
       - kfc
       - mcdonalds
       - burger
+      - pizza
+      - суши
+      - sushi
       - доставка еды
       - яндекс еда
+      - yandex eda
       - delivery club
+      - food
+      - bistro
+      - столовая
 
   transport:
     label: "Транспорт"
     keywords:
       - такси
+      - taxi
       - yandex go
       - uber
       - metro
       - метро
       - аэроэкспресс
       - ржд
+      - rzd
       - заправка
       - azs
       - lukoil
       - rosneft
+      - gazpromneft
       - каршеринг
+      - carsharing
+      - delimobil
       - delimit
       - citymobil
+      - belka car
+      - whoosh
+      - самокат
+      - parking
+      - парковка
+      - toll
 
   subscriptions:
     label: "Подписки и связь"
@@ -56,13 +88,21 @@ categories:
       - ivi
       - okko
       - kinopoisk
+      - кинопоиск
       - мтс
+      - mts
       - билайн
+      - beeline
       - tele2
       - мегафон
+      - megafon
       - yota
       - mobile
       - интернет
+      - internet
+      - telecom
+      - youtube premium
+      - apple.com/bill
 
   health:
     label: "Здоровье и красота"
@@ -72,13 +112,27 @@ categories:
       - rigla
       - "36.6"
       - стоматолог
+      - dentist
       - клиника
+      - clinic
       - медиц
+      - medic
       - invitro
       - gemotest
+      - helix
       - салон
       - barbershop
+      - barber
       - косметолог
+      - fitness
+      - fit club
+      - gym
+      - спортзал
+      - yoga
+      - pilates
+      - массаж
+      - optika
+      - оптика
 
   shopping:
     label: "Покупки и одежда"
@@ -93,7 +147,15 @@ categories:
       - h&m
       - zara
       - маркетплейс
+      - marketplace
       - aliexpress
+      - shein
+      - rendez-vous
+      - sportmaster
+      - re store
+      - technopark
+      - leonardo
+      - fix price
 
   entertainment:
     label: "Развлечения"
@@ -101,13 +163,22 @@ categories:
       - кино
       - cinema
       - театр
+      - theater
       - museum
       - steam
       - playstation
       - xbox
+      - nintendo
       - концерт
+      - concert
       - ticket
       - билет
+      - entertainment
+      - amusement
+      - bowling
+      - karaoke
+      - zoo
+      - park
 
   housing:
     label: "Жильё и коммунальные"
@@ -115,13 +186,25 @@ categories:
       - аренда
       - rent
       - жкх
+      - zhkh
+      - zhilkom
+      - komuslug
       - коммунал
+      - utility
+      - utilities
       - электроэнерг
       - газ
+      - vodokanal
       - водоканал
       - управляющая компания
       - ипотека
+      - ipoteka
+      - ipote
       - mortgage
+      - domclick
+      - еирц
+      - eirc
+      - tns energo
 
   education:
     label: "Образование"
@@ -131,53 +214,100 @@ categories:
       - udemy
       - skillbox
       - netology
+      - нетология
       - университет
+      - university
       - школа
+      - school
       - репетитор
+      - tutor
       - coursera
+      - geekbrains
+      - hexlet
+      - online school
+      - обучение
+      - training
+      - webinar
+      - лекториум
 
   finance:
     label: "Финансы и переводы"
     keywords:
       - комиссия
+      - commission
       - fee
+      - bank fee
       - перевод
+      - transfer
       - p2p
       - sbp
       - сбп
+      - obmen
       - обмен валют
       - страхов
       - insurance
       - налог
       - tax
+      - card to card
+      - to card
+      - снятие
+      - atm
+      - банкомат
+      - кредит
+      - loan
 
   business:
     label: "Бизнес и самозанятость"
     keywords:
       - tilda
-      - тilda
       - figma
       - notion
       - github
       - gitlab
       - aws
+      - azure
+      - google cloud
       - yandex cloud
       - selectel
       - reg.ru
       - timeweb
       - beget
       - домен
+      - domain
       - хостинг
+      - hosting
+      - cloud payment
+      - cloud
       - реклама
+      - advertising
       - yandex direct
       - google ads
       - mytarget
+      - vk ads
       - самозанят
+      - self employed
       - ип
+      - ip ivanov
+      - ooo
+      - llc
+      - agency
+      - marketing
+      - design studio
+      - studio
+      - freelance
       - бухгалтер
+      - accountant
       - контур
+      - kontur
       - сбис
+      - sbis
       - diadoc
+      - zoom
+      - slack
+      - canva
+      - mailchimp
+      - amo crm
+      - bitrix
 
   other:
     label: "Прочее"

@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 
 class CategorizationSource(str, Enum):
     MERCHANT_KB = "merchant_kb"
+    MCC = "mcc"
     RULES = "rules"
     LLM = "llm"
     BANK = "bank"
@@ -50,6 +51,7 @@ class CategorizationResult(BaseModel):
     usage: TokenUsage = Field(default_factory=TokenUsage)
     rules_matched: int = 0
     merchant_kb_matched: int = 0
+    mcc_matched: int = 0
     llm_matched: int = 0
     skipped: int = 0
 

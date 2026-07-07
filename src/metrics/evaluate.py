@@ -86,6 +86,7 @@ def build_report(
         "token_usage": result.usage.model_dump(),
         "pipeline_stats": {
             "merchant_kb": result.merchant_kb_matched,
+            "mcc": result.mcc_matched,
             "rules": result.rules_matched,
             "llm": result.llm_matched,
             "skipped_income": result.skipped,

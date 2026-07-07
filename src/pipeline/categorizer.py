@@ -9,28 +9,33 @@ from src.domain.models import (
     Transaction,
 )
 from src.engines.llm import LLMCategorizer
+from src.engines.mcc import MccMapper
 from src.engines.merchant_lookup import MerchantKnowledgeBase
 from src.engines.rules import RuleEngine
 
 
 class ExpenseCategorizer:
     """
-    Трёхуровневый пайплайн (экономия токенов):
-    1. База мерчантов (0 токенов)
-    2. Правила по ключевым словам (0 токенов)
-    3. LLM батчами только для оставшихся
+    Пайплайн категоризации (экономия токенов):
+    1. Банковская категория
+    2. База мерчантов (0 токенов)
+    3. MCC-код (0 токенов)
+    4. Правила по ключевым словам (0 токенов)
+    5. LLM батчами только для оставшихся
     """
 
     def __init__(
         self,
         taxonomy: Taxonomy,
         merchant_kb: MerchantKnowledgeBase,
+        mcc_mapper: MccMapper,
         rule_engine: RuleEngine,
         llm: LLMCategorizer | None = None,
         use_llm: bool = True,
     ):
         self.taxonomy = taxonomy
         self.merchant_kb = merchant_kb
+        self.mcc_mapper = mcc_mapper
         self.rule_engine = rule_engine
         self.llm = llm
         self.use_llm = use_llm and llm is not None
@@ -56,41 +61,29 @@ class ExpenseCategorizer:
             if tx.bank_category:
                 cat_id = self._map_bank_category(tx.bank_category)
                 if cat_id:
-                    result.transactions.append(
-                        CategorizedTransaction(
-                            **tx.model_dump(),
-                            category_id=cat_id,
-                            category_label=self.taxonomy.label_for(cat_id),
-                            confidence=0.95,
-                            source=CategorizationSource.BANK,
-                        )
-                    )
+                    result.transactions.append(self._categorized(tx, cat_id, 0.95, CategorizationSource.BANK))
                     continue
 
             merchant_cat = self.merchant_kb.match(tx.description)
             if merchant_cat:
                 result.transactions.append(
-                    CategorizedTransaction(
-                        **tx.model_dump(),
-                        category_id=merchant_cat,
-                        category_label=self.taxonomy.label_for(merchant_cat),
-                        confidence=0.98,
-                        source=CategorizationSource.MERCHANT_KB,
-                    )
+                    self._categorized(tx, merchant_cat, 0.98, CategorizationSource.MERCHANT_KB)
                 )
                 result.merchant_kb_matched += 1
+                continue
+
+            mcc_cat = self.mcc_mapper.match(tx.mcc)
+            if mcc_cat:
+                result.transactions.append(
+                    self._categorized(tx, mcc_cat, 0.92, CategorizationSource.MCC)
+                )
+                result.mcc_matched += 1
                 continue
 
             rule_cat = self.rule_engine.match(tx.description)
             if rule_cat:
                 result.transactions.append(
-                    CategorizedTransaction(
-                        **tx.model_dump(),
-                        category_id=rule_cat,
-                        category_label=self.taxonomy.label_for(rule_cat),
-                        confidence=0.85,
-                        source=CategorizationSource.RULES,
-                    )
+                    self._categorized(tx, rule_cat, 0.85, CategorizationSource.RULES)
                 )
                 result.rules_matched += 1
                 continue
@@ -107,28 +100,33 @@ class ExpenseCategorizer:
                 llm_item = llm_map.get(tx_id, {"category": "other", "confidence": 0.3})
                 cat_id = llm_item["category"]
                 result.transactions.append(
-                    CategorizedTransaction(
-                        **tx.model_dump(),
-                        category_id=cat_id,
-                        category_label=self.taxonomy.label_for(cat_id),
-                        confidence=float(llm_item.get("confidence", 0.7)),
-                        source=CategorizationSource.LLM,
+                    self._categorized(
+                        tx, cat_id, float(llm_item.get("confidence", 0.7)), CategorizationSource.LLM
                     )
                 )
                 result.llm_matched += 1
         else:
             for _, _, tx in pending_llm:
                 result.transactions.append(
-                    CategorizedTransaction(
-                        **tx.model_dump(),
-                        category_id="other",
-                        category_label=self.taxonomy.label_for("other"),
-                        confidence=0.0,
-                        source=CategorizationSource.LLM if self.use_llm else CategorizationSource.RULES,
-                    )
+                    self._categorized(tx, "other", 0.0, CategorizationSource.LLM if self.use_llm else CategorizationSource.RULES)
                 )
 
         return result
+
+    def _categorized(
+        self,
+        tx: Transaction,
+        category_id: str,
+        confidence: float,
+        source: CategorizationSource,
+    ) -> CategorizedTransaction:
+        return CategorizedTransaction(
+            **tx.model_dump(),
+            category_id=category_id,
+            category_label=self.taxonomy.label_for(category_id),
+            confidence=confidence,
+            source=source,
+        )
 
     def _map_bank_category(self, bank_category: str) -> str | None:
         text = bank_category.lower()
@@ -150,6 +148,8 @@ class ExpenseCategorizer:
             "образован": "education",
             "перевод": "finance",
             "комисс": "finance",
+            "бизнес": "business",
+            "реклам": "business",
         }
         for key, cat_id in mapping.items():
             if key in text:

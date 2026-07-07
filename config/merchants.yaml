@@ -1,13 +1,12 @@
 # База мерчантов: точное сопоставление без LLM (0 токенов)
-# Формат: паттерн в описании операции → категория
 
 merchants:
-  # Бизнес / самозанятость
+  # --- Бизнес / самозанятость ---
   - patterns: ["tilda", "tilda.cc", "tilda publishing"]
     category: business
-  - patterns: ["figma", "figma.com"]
+  - patterns: ["figma", "figma.com", "figma inc"]
     category: business
-  - patterns: ["notion", "notion.so"]
+  - patterns: ["notion", "notion.so", "notion labs"]
     category: business
   - patterns: ["github", "gitlab"]
     category: business
@@ -17,9 +16,9 @@ merchants:
     category: business
   - patterns: ["selectel"]
     category: business
-  - patterns: ["reg.ru", "regru"]
+  - patterns: ["reg.ru", "regru", "reg.ru domain"]
     category: business
-  - patterns: ["timeweb", "beget"]
+  - patterns: ["timeweb", "beget", "timeweb hosting"]
     category: business
   - patterns: ["yandex direct", "яндекс директ"]
     category: business
@@ -29,39 +28,99 @@ merchants:
     category: business
   - patterns: ["контур", "kontur", "сбис", "sbis"]
     category: business
+  - patterns: ["ooo alfa", "alfa service"]
+    category: business
+  - patterns: ["ip ivanov"]
+    category: business
+  - patterns: ["cloud payment"]
+    category: business
+  - patterns: ["design studio", "marketing agency"]
+    category: business
 
-  # Подписки
+  # --- Подписки ---
   - patterns: ["netflix"]
     category: subscriptions
   - patterns: ["spotify"]
     category: subscriptions
   - patterns: ["ivi", "okko", "kinopoisk", "кинопоиск"]
     category: subscriptions
+  - patterns: ["mts mobile", "mts "]
+    category: subscriptions
+  - patterns: ["megafon"]
+    category: subscriptions
+  - patterns: ["beeline", "билайн", "tele2", "yota"]
+    category: subscriptions
 
-  # Продукты
-  - patterns: ["pyaterochka", "пятёрочка", "perekrestok", "перекрёсток", "magnit", "магнит"]
+  # --- Продукты ---
+  - patterns: ["pyaterochka", "пятёрочка", "perekrestok", "перекрёсток"]
     category: groceries
-  - patterns: ["lenta", "лента", "ashan", "ашан", "dixy", "дикси"]
+  - patterns: ["magnit", "магнит"]
+    category: groceries
+  - patterns: ["lenta hyper", "lenta ", "лента"]
+    category: groceries
+  - patterns: ["ashan", "ашан", "dixy", "дикси"]
+    category: groceries
+  - patterns: ["vkusvill", "вкусвill"]
     category: groceries
 
-  # Транспорт
+  # --- Рестораны ---
+  - patterns: ["starbucks", "dodo pizza", "dodo "]
+    category: dining
+  - patterns: ["yandex eda", "яндекс еда", "delivery club"]
+    category: dining
+  - patterns: ["kfc", "mcdonalds", "burger king"]
+    category: dining
+
+  # --- Транспорт ---
   - patterns: ["yandex go", "яндекс go", "yandex.taxi"]
     category: transport
   - patterns: ["citymobil", "delimobil", "belka car"]
     category: transport
+  - patterns: ["lukoil", "rosneft", "gazpromneft", " azs"]
+    category: transport
 
-  # Маркетплейсы
+  # --- Маркетплейсы ---
   - patterns: ["ozon", "ozon.ru"]
     category: shopping
   - patterns: ["wildberries", "wb.ru"]
     category: shopping
-  - patterns: ["lamoda"]
+  - patterns: ["lamoda", "dns ", "mvideo", "citilink"]
     category: shopping
 
-  # Здоровье
+  # --- Здоровье ---
   - patterns: ["rigla", "ригла", "36.6", "gemotest", "invitro"]
     category: health
+  - patterns: ["fit club", "fitness", "world class"]
+    category: health
 
-  # Образование
+  # --- Развлечения ---
+  - patterns: ["cinema park", "cinema ", "karо"]
+    category: entertainment
+  - patterns: ["steam purchase", "steam "]
+    category: entertainment
+  - patterns: ["entertainment hall"]
+    category: entertainment
+
+  # --- Жильё ---
+  - patterns: ["zhilkomuslugi", "zhilkom", "жкх", "komuslug"]
+    category: housing
+  - patterns: ["ipote", "ipoteka payment", "ипотека"]
+    category: housing
+  - patterns: ["domclick", "eirc", "еирц"]
+    category: housing
+
+  # --- Образование ---
   - patterns: ["skillbox", "netology", "нетология", "udemy", "coursera"]
     category: education
+  - patterns: ["online school"]
+    category: education
+  - patterns: ["geekbrains", "hexlet"]
+    category: education
+
+  # --- Финансы ---
+  - patterns: ["sbp p2p", "sbp ", "p2p transfer"]
+    category: finance
+  - patterns: ["bank fee", "transfer to card", "card to card"]
+    category: finance
+  - patterns: ["commission", "комиссия"]
+    category: finance
