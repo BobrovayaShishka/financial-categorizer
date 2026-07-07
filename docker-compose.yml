@@ -1,0 +1,46 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: expense-ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  ollama-init:
+    image: ollama/ollama:latest
+    container_name: expense-ollama-init
+    depends_on:
+      ollama:
+        condition: service_healthy
+    network_mode: "service:ollama"
+    entrypoint: ["ollama", "pull", "qwen2.5:3b"]
+    restart: "no"
+
+  api:
+    build: .
+    container_name: expense-categorizer-api
+    env_file:
+      - .env
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./config:/app/config:ro
+      - ./data:/app/data
+    depends_on:
+      ollama:
+        condition: service_healthy
+      ollama-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+volumes:
+  ollama_data:

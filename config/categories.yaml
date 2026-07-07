@@ -1,0 +1,184 @@
+# Таксономия расходов физлица (верхний уровень — минимум «прочее»)
+categories:
+  groceries:
+    label: "Продукты и быт"
+    keywords:
+      - пятёрочка
+      - перекрёсток
+      - магнит
+      - лента
+      - ашан
+      - дикси
+      - продукт
+      - супермаркет
+      - grocery
+
+  dining:
+    label: "Рестораны и кафе"
+    keywords:
+      - ресторан
+      - кафе
+      - coffee
+      - starbucks
+      - додо
+      - kfc
+      - mcdonalds
+      - burger
+      - доставка еды
+      - яндекс еда
+      - delivery club
+
+  transport:
+    label: "Транспорт"
+    keywords:
+      - такси
+      - yandex go
+      - uber
+      - metro
+      - метро
+      - аэроэкспресс
+      - ржд
+      - заправка
+      - azs
+      - lukoil
+      - rosneft
+      - каршеринг
+      - delimit
+      - citymobil
+
+  subscriptions:
+    label: "Подписки и связь"
+    keywords:
+      - подписка
+      - subscription
+      - netflix
+      - spotify
+      - ivi
+      - okko
+      - kinopoisk
+      - мтс
+      - билайн
+      - tele2
+      - мегафон
+      - yota
+      - mobile
+      - интернет
+
+  health:
+    label: "Здоровье и красота"
+    keywords:
+      - аптека
+      - pharmacy
+      - rigla
+      - 36.6
+      - стоматолог
+      - клиника
+      - медиц
+      - invitro
+      - gemotest
+      - салон
+      - barbershop
+      - косметолог
+
+  shopping:
+    label: "Покупки и одежда"
+    keywords:
+      - ozon
+      - wildberries
+      - lamoda
+      - dns
+      - mvideo
+      - citilink
+      - ikea
+      - h&m
+      - zara
+      - маркетплейс
+      - aliexpress
+
+  entertainment:
+    label: "Развлечения"
+    keywords:
+      - кино
+      - cinema
+      - театр
+      - museum
+      - steam
+      - playstation
+      - xbox
+      - концерт
+      - ticket
+      - билет
+
+  housing:
+    label: "Жильё и коммунальные"
+    keywords:
+      - аренда
+      - rent
+      - жкх
+      - коммунал
+      - электроэнерг
+      - газ
+      - водоканал
+      - управляющая компания
+      - ипотека
+      - mortgage
+
+  education:
+    label: "Образование"
+    keywords:
+      - курс
+      - course
+      - udemy
+      - skillbox
+      - netology
+      - университет
+      - школа
+      - репетитор
+      - coursera
+
+  finance:
+    label: "Финансы и переводы"
+    keywords:
+      - комиссия
+      - fee
+      - перевод
+      - p2p
+      - sbp
+      - сбп
+      - обмен валют
+      - страхов
+      - insurance
+      - налог
+      - tax
+
+  business:
+    label: "Бизнес и самозанятость"
+    keywords:
+      - tilda
+      - тilda
+      - figma
+      - notion
+      - github
+      - gitlab
+      - aws
+      - yandex cloud
+      - selectel
+      - reg.ru
+      - timeweb
+      - beget
+      - домен
+      - хостинг
+      - реклама
+      - yandex direct
+      - google ads
+      - mytarget
+      - самозанят
+      - ип
+      - бухгалтер
+      - контур
+      - сбис
+      - diadoc
+
+  other:
+    label: "Прочее"
+    keywords: []

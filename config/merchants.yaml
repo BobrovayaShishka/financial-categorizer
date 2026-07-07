@@ -1,0 +1,67 @@
+# База мерчантов: точное сопоставление без LLM (0 токенов)
+# Формат: паттерн в описании операции → категория
+
+merchants:
+  # Бизнес / самозанятость
+  - patterns: ["tilda", "tilda.cc", "tilda publishing"]
+    category: business
+  - patterns: ["figma", "figma.com"]
+    category: business
+  - patterns: ["notion", "notion.so"]
+    category: business
+  - patterns: ["github", "gitlab"]
+    category: business
+  - patterns: ["aws", "amazon web services"]
+    category: business
+  - patterns: ["yandex cloud", "yandexcloud"]
+    category: business
+  - patterns: ["selectel"]
+    category: business
+  - patterns: ["reg.ru", "regru"]
+    category: business
+  - patterns: ["timeweb", "beget"]
+    category: business
+  - patterns: ["yandex direct", "яндекс директ"]
+    category: business
+  - patterns: ["google ads", "adwords"]
+    category: business
+  - patterns: ["mytarget", "vk ads"]
+    category: business
+  - patterns: ["контур", "kontur", "сбис", "sbis"]
+    category: business
+
+  # Подписки
+  - patterns: ["netflix"]
+    category: subscriptions
+  - patterns: ["spotify"]
+    category: subscriptions
+  - patterns: ["ivi", "okko", "kinopoisk", "кинопоиск"]
+    category: subscriptions
+
+  # Продукты
+  - patterns: ["pyaterochka", "пятёрочка", "perekrestok", "перекрёсток", "magnit", "магнит"]
+    category: groceries
+  - patterns: ["lenta", "лента", "ashan", "ашан", "dixy", "дикси"]
+    category: groceries
+
+  # Транспорт
+  - patterns: ["yandex go", "яндекс go", "yandex.taxi"]
+    category: transport
+  - patterns: ["citymobil", "delimobil", "belka car"]
+    category: transport
+
+  # Маркетплейсы
+  - patterns: ["ozon", "ozon.ru"]
+    category: shopping
+  - patterns: ["wildberries", "wb.ru"]
+    category: shopping
+  - patterns: ["lamoda"]
+    category: shopping
+
+  # Здоровье
+  - patterns: ["rigla", "ригла", "36.6", "gemotest", "invitro"]
+    category: health
+
+  # Образование
+  - patterns: ["skillbox", "netology", "нетология", "udemy", "coursera"]
+    category: education

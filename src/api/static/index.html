@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Категоризация расходов</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #1a2332;
+      --border: #2d3a4f;
+      --text: #e7ecf3;
+      --muted: #8b9cb3;
+      --accent: #3b82f6;
+      --success: #22c55e;
+      --warn: #f59e0b;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 2rem;
+    }
+    h1 { font-size: 1.75rem; margin-bottom: 0.25rem; }
+    .subtitle { color: var(--muted); margin-bottom: 2rem; }
+    .grid { display: grid; grid-template-columns: 1fr 320px; gap: 1.5rem; }
+    @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .card h2 { font-size: 1rem; margin-bottom: 1rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .controls { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    button, label.btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    button.secondary { background: var(--border); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    input[type=file] { display: none; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    th, td { padding: 0.5rem 0.75rem; text-align: left; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 500; }
+    .amount { color: #f87171; font-variant-numeric: tabular-nums; }
+    .badge {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: var(--border);
+    }
+    .badge.kb { background: #1e3a5f; color: #93c5fd; }
+    .badge.rules { background: #14532d; color: #86efac; }
+    .badge.llm { background: #713f12; color: #fcd34d; }
+    .stat-row { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--border); }
+    .stat-row:last-child { border: none; }
+    .metric-big { font-size: 2rem; font-weight: 700; }
+    .metric-big.pass { color: var(--success); }
+    .metric-big.fail { color: var(--warn); }
+    .category-bar { margin-bottom: 0.75rem; }
+    .category-bar .label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.25rem; }
+    .bar-track { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--accent); border-radius: 3px; }
+    #status { color: var(--muted); font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <h1>Категоризация расходов</h1>
+  <p class="subtitle">Выписка физлица · правила → база мерчантов → LLM (Ollama)</p>
+
+  <div class="controls">
+    <label class="btn">
+      Загрузить CSV
+      <input type="file" id="fileInput" accept=".csv">
+    </label>
+    <button id="demoBtn">Демо на синтетике</button>
+    <button id="evalBtn" class="secondary">Оценить точность</button>
+    <label style="display:flex;align-items:center;gap:0.4rem;color:var(--muted);font-size:0.9rem;">
+      <input type="checkbox" id="useLlm" checked> Использовать LLM
+    </label>
+    <span id="status"></span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Транзакции</h2>
+      <div style="overflow-x:auto;max-height:520px;overflow-y:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Дата</th>
+              <th>Описание</th>
+              <th>Сумма</th>
+              <th>Категория</th>
+              <th>Источник</th>
+            </tr>
+          </thead>
+          <tbody id="txBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <div class="card" style="margin-bottom:1.5rem;">
+        <h2>Токены</h2>
+        <div class="stat-row"><span>Prompt</span><span id="tokPrompt">0</span></div>
+        <div class="stat-row"><span>Completion</span><span id="tokCompletion">0</span></div>
+        <div class="stat-row"><span>Всего</span><span id="tokTotal">0</span></div>
+        <div class="stat-row"><span>LLM вызовов</span><span id="tokCalls">0</span></div>
+        <div class="stat-row"><span>Из кэша</span><span id="tokCache">0</span></div>
+      </div>
+
+      <div class="card" style="margin-bottom:1.5rem;">
+        <h2>Пайплайн</h2>
+        <div class="stat-row"><span>База мерчантов</span><span id="statKb">0</span></div>
+        <div class="stat-row"><span>Правила</span><span id="statRules">0</span></div>
+        <div class="stat-row"><span>LLM</span><span id="statLlm">0</span></div>
+      </div>
+
+      <div class="card" id="evalCard" style="display:none;">
+        <h2>Оценка</h2>
+        <div class="metric-big" id="accuracy">—</div>
+        <div class="stat-row"><span>Доля «Прочее»</span><span id="otherRate">—</span></div>
+        <div class="stat-row"><span>Цель 95%</span><span id="target95">—</span></div>
+      </div>
+
+      <div class="card" style="margin-top:1.5rem;">
+        <h2>Расходы по категориям</h2>
+        <div id="categoryBars"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const fmt = n => new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB' }).format(n);
+    const sourceBadge = s => {
+      const cls = { merchant_kb: 'kb', rules: 'rules', llm: 'llm' }[s] || '';
+      const labels = { merchant_kb: 'KB', rules: 'Rules', llm: 'LLM', bank: 'Bank', skipped: '—' };
+      return `<span class="badge ${cls}">${labels[s] || s}</span>`;
+    };
+
+    function renderTransactions(txs) {
+      const body = document.getElementById('txBody');
+      body.innerHTML = txs.filter(t => t.amount < 0).slice(0, 100).map(t => `
+        <tr>
+          <td>${t.date}</td>
+          <td>${t.description}</td>
+          <td class="amount">${fmt(t.amount)}</td>
+          <td>${t.category_label}</td>
+          <td>${sourceBadge(t.source)}</td>
+        </tr>
+      `).join('');
+    }
+
+    function renderUsage(u) {
+      document.getElementById('tokPrompt').textContent = u.prompt_tokens;
+      document.getElementById('tokCompletion').textContent = u.completion_tokens;
+      document.getElementById('tokTotal').textContent = u.total_tokens;
+      document.getElementById('tokCalls').textContent = u.llm_calls;
+      document.getElementById('tokCache').textContent = u.cached_hits;
+    }
+
+    function renderStats(s) {
+      document.getElementById('statKb').textContent = s.merchant_kb;
+      document.getElementById('statRules').textContent = s.rules;
+      document.getElementById('statLlm').textContent = s.llm;
+    }
+
+    function renderCategories(txs) {
+      const totals = {};
+      txs.filter(t => t.amount < 0).forEach(t => {
+        totals[t.category_label] = (totals[t.category_label] || 0) + Math.abs(t.amount);
+      });
+      const max = Math.max(...Object.values(totals), 1);
+      document.getElementById('categoryBars').innerHTML = Object.entries(totals)
+        .sort((a, b) => b[1] - a[1])
+        .map(([label, sum]) => `
+          <div class="category-bar">
+            <div class="label"><span>${label}</span><span>${fmt(sum)}</span></div>
+            <div class="bar-track"><div class="bar-fill" style="width:${(sum/max*100).toFixed(1)}%"></div></div>
+          </div>
+        `).join('');
+    }
+
+    async function categorizeFormData(file) {
+      const useLlm = document.getElementById('useLlm').checked;
+      const fd = new FormData();
+      fd.append('file', file);
+      const resp = await fetch(`/categorize/upload?use_llm=${useLlm}`, { method: 'POST', body: fd });
+      return resp.json();
+    }
+
+    async function runDemo() {
+      document.getElementById('status').textContent = 'Загрузка демо-данных...';
+      const resp = await fetch('/data/labeled/statement_labeled.csv');
+      if (!resp.ok) { document.getElementById('status').textContent = 'Сначала сгенерируйте data (scripts/generate_data.py)'; return; }
+      const blob = await resp.blob();
+      const file = new File([blob], 'statement.csv');
+      const data = await categorizeFormData(file);
+      renderTransactions(data.transactions);
+      renderUsage(data.usage);
+      renderStats(data.stats);
+      renderCategories(data.transactions);
+      document.getElementById('status').textContent = `Обработано ${data.transactions.length} операций`;
+    }
+
+    document.getElementById('fileInput').addEventListener('change', async e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      document.getElementById('status').textContent = 'Обработка...';
+      const data = await categorizeFormData(file);
+      renderTransactions(data.transactions);
+      renderUsage(data.usage);
+      renderStats(data.stats);
+      renderCategories(data.transactions);
+      document.getElementById('status').textContent = `Готово: ${file.name}`;
+    });
+
+    document.getElementById('demoBtn').addEventListener('click', runDemo);
+
+    document.getElementById('evalBtn').addEventListener('click', async () => {
+      document.getElementById('status').textContent = 'Оценка...';
+      const useLlm = document.getElementById('useLlm').checked;
+      const resp = await fetch(`/demo/evaluate?use_llm=${useLlm}`, { method: 'POST' });
+      const report = await resp.json();
+      if (report.error) { document.getElementById('status').textContent = report.error; return; }
+
+      const acc = report.metrics.accuracy;
+      const el = document.getElementById('accuracy');
+      el.textContent = (acc * 100).toFixed(1) + '%';
+      el.className = 'metric-big ' + (report.metrics.meets_95_target ? 'pass' : 'fail');
+      document.getElementById('otherRate').textContent = (report.metrics.other_rate * 100).toFixed(1) + '%';
+      document.getElementById('target95').textContent = report.metrics.meets_95_target ? '✓ Да' : '✗ Нет';
+      document.getElementById('evalCard').style.display = 'block';
+      renderUsage(report.token_usage);
+      renderStats(report.pipeline_stats);
+      document.getElementById('status').textContent = 'Оценка завершена';
+    });
+  </script>
+</body>
+</html>
