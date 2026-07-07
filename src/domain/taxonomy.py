@@ -19,6 +19,6 @@ def load_taxonomy(path: Path | None = None) -> Taxonomy:
         categories[cid] = CategoryInfo(
             id=cid,
             label=data["label"],
-            keywords=[k.lower() for k in data.get("keywords", [])],
+            keywords=[str(k).lower() for k in data.get("keywords", [])],
         )
     return Taxonomy(categories=categories)

@@ -18,7 +18,7 @@ class MerchantKnowledgeBase:
         with open(config_path, encoding="utf-8") as f:
             raw = yaml.safe_load(f)
         for entry in raw.get("merchants", []):
-            patterns = [p.lower() for p in entry["patterns"]]
+            patterns = [str(p).lower() for p in entry["patterns"]]
             self._entries.append((patterns, entry["category"]))
 
     def match(self, description: str) -> str | None:
