@@ -191,7 +191,3 @@ python -m venv .venv
 pip install -r requirements.txt
 uvicorn src.api.app:app --reload
 ```
-
-## Лицензия
-
-MIT (или укажите свою)
